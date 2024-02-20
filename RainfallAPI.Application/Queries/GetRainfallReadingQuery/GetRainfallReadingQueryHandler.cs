@@ -15,9 +15,10 @@ namespace RainfallAPI.Application.Queries.GetRainfallReadingQuery
         private const int DefaultReadingCount = 10;
         private const int MinimumReadingCount = 1;
         private const int MaxReadingCount = 100;
+        private const string BaseUri = "http://environment.data.gov.uk/flood-monitoring";
         // for future use: add shared services in the constructor initialization
-        public GetRainfallReadingQueryHandler() 
-        {
+        public GetRainfallReadingQueryHandler()
+        { 
         }
 
         public Task<RainfallReadingQueryResponse> Handle(GetRainfallReadingQuery request, CancellationToken cancellationToken)
@@ -43,6 +44,16 @@ namespace RainfallAPI.Application.Queries.GetRainfallReadingQuery
                 });
             }
             return Task.FromResult(rainfallReadingQueryResponse);
+        }
+
+        private Task<IList<RainfallReadingResponse>> GetRainfallReadingResponses(string stationId, int count)
+        {
+            // to-do: move this to a helper service for reusability
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(BaseUri);
+
+            }
         }
     }
 }

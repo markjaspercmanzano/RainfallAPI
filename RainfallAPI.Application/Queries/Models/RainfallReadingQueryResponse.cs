@@ -10,7 +10,7 @@ namespace RainfallAPI.Application.Queries.Models
 {
     public class RainfallReadingQueryResponse
     {
-        public IList<RainfallReadingResponse> RainfallReadings { get; set; }
+        public RainfallReadingResponse RainfallReadings { get; set; }
         public IList<Error> ErrorResponses { get; set; }
     }
 }
