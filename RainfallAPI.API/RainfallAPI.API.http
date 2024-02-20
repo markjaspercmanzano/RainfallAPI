@@ -1,6 +1,6 @@
 @RainfallAPI.API_HostAddress = http://localhost:3000
 
-GET {{RainfallAPI.API_HostAddress}}/weatherforecast/
+GET {{RainfallAPI.API_HostAddress}}/rainfall/
 Accept: application/json
 
 ###

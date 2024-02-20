@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RainfallAPI.Domain.Models
+namespace RainfallAPI.Domain.Models.RainfallReadings
 {
     public class RainfallReadingResponse
     {
-        public RainfallReading[] Readings { get; set; }
+        public IList<RainfallReading> Readings { get; set; }
     }
 }

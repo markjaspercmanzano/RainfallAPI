@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RainfallAPI.Domain.Models
+namespace RainfallAPI.Domain.Models.RainfallReadings
 {
     public class RainfallReading
     {
-        public string DateMeasured { get; set; }
+        public required string DateMeasured { get; set; }
         public decimal AmountMeasured { get; set; }
     }
 }
