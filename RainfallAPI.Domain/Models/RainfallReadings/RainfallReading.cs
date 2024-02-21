@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RainfallAPI.Domain.Utils;
+using System.Text.Json.Serialization;
 
 namespace RainfallAPI.Domain.Models.RainfallReadings
 {
+    [JsonConverter(typeof(RainfallReadingConverter))]
     public class RainfallReading
     {
         public required string DateMeasured { get; set; }

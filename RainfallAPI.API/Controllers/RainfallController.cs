@@ -34,9 +34,13 @@ namespace RainfallAPI.API.Controllers
         public async Task<IActionResult> GetRainfallReadings([FromRoute] string stationId, [FromQuery] int? count)
         {
             var response = await _mediator.Send(new GetRainfallReadingQuery { StationId = stationId, Count = count });
-            // to-do: implementation via mediator 
-            // var response = new 
-            return NotFound();
+
+            if (response.ErrorResponses != null && response.ErrorResponses.Count > 0)
+            {
+                return BadRequest(response.ErrorResponses);
+            }
+
+            return Ok(response.RainfallReadings);
         }
         #endregion
     }
