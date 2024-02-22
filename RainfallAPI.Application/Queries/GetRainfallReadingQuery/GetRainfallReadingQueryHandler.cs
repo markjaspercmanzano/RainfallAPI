@@ -2,13 +2,7 @@
 using RainfallAPI.Application.Queries.Models;
 using RainfallAPI.Domain.Models.Errors;
 using RainfallAPI.Domain.Models.RainfallReadings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace RainfallAPI.Application.Queries.GetRainfallReadingQuery
 {
@@ -25,17 +19,22 @@ namespace RainfallAPI.Application.Queries.GetRainfallReadingQuery
 
         public async Task<RainfallReadingQueryResponse> Handle(GetRainfallReadingQuery request, CancellationToken cancellationToken)
         {
-            var rainfallReadingQueryResponse = new RainfallReadingQueryResponse();
-            rainfallReadingQueryResponse.ErrorResponses = new List<Error>();
+            var rainfallReadingQueryResponse = new RainfallReadingQueryResponse
+            {
+                ErrorResponses = new List<Error>()
+            };
+
             if (!request.Count.HasValue) request.Count = DefaultReadingCount;
 
-            if (string.IsNullOrEmpty(request.StationId))
+            if (string.IsNullOrWhiteSpace(request.StationId))
             {
                 rainfallReadingQueryResponse.ErrorResponses.Add(new Error()
                 {
                     Message = "Station ID is required",
                     Detail = new List<ErrorDetail>() { new() { PropertyName = "StationID", Message = "Station ID cannot be null or empty."} }
                 });
+
+                return rainfallReadingQueryResponse;
             }
 
             if (request.Count < MinimumReadingCount || request.Count > MaxReadingCount)
@@ -45,10 +44,11 @@ namespace RainfallAPI.Application.Queries.GetRainfallReadingQuery
                     Message = "Invalid Count",
                     Detail = new List<ErrorDetail>() { new() { PropertyName = "Count", Message = "Count should be between 1 to 100." } }
                 });
+
+                return rainfallReadingQueryResponse;
             }
 
             rainfallReadingQueryResponse.RainfallReadings = await GetRainfallReadingResponses(request.StationId, request.Count.Value);
-
             if (rainfallReadingQueryResponse.RainfallReadings == null || rainfallReadingQueryResponse.RainfallReadings.Readings.Count == 0)
             {
                 rainfallReadingQueryResponse.ErrorResponses.Add(new Error()
@@ -60,14 +60,14 @@ namespace RainfallAPI.Application.Queries.GetRainfallReadingQuery
             return rainfallReadingQueryResponse;
         }
 
-        private async Task<RainfallReadingResponse> GetRainfallReadingResponses(string stationId, int count)
+        private static async Task<RainfallReadingResponse> GetRainfallReadingResponses(string stationId, int count)
         {
             // to-do: move this to a helper service for reusability
             using HttpClient client = new();
             var response = await client.GetAsync($"{BaseUri}/id/stations/{stationId}/readings?_limit={count}");
-            var rainfallReadingResponse = await JsonSerializer.DeserializeAsync<RainfallReadingResponse>(await response.Content.ReadAsStreamAsync());
 
-            return rainfallReadingResponse;
+            // return serialized rainfallReadingResponse if not null; otherwise, return an empty instance of the rainfallReadingResponse
+            return await JsonSerializer.DeserializeAsync<RainfallReadingResponse>(await response.Content.ReadAsStreamAsync()) ?? new RainfallReadingResponse() { Readings = new List<RainfallReading>() };
         }
     }
 }
