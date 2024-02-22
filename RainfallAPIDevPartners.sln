@@ -13,6 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RainfallAPI.DataAccess", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainfallAPI.ApplicationTests", "RainfallAPI.ApplicationTests\RainfallAPI.ApplicationTests.csproj", "{A9B4F94F-552C-4793-B547-6757E3678746}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D66BC4EB-8E1E-4814-A7C6-0C25831BDA46}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
