@@ -21,14 +21,17 @@ namespace RainfallAPI.Application.Queries.GetRainfallReadingQuery
         {
             var rainfallReadingQueryResponse = new RainfallReadingQueryResponse
             {
-                ErrorResponses = new List<Error>()
+                ErrorResponses = new ErrorResponse()
+                {
+                    Errors = new List<Error>()
+                } 
             };
 
             if (!request.Count.HasValue) request.Count = DefaultReadingCount;
 
             if (string.IsNullOrWhiteSpace(request.StationId))
             {
-                rainfallReadingQueryResponse.ErrorResponses.Add(new Error()
+                rainfallReadingQueryResponse.ErrorResponses.Errors.Add(new Error()
                 {
                     Message = "Station ID is required",
                     Detail = new List<ErrorDetail>() { new() { PropertyName = "StationID", Message = "Station ID cannot be null or empty."} }
@@ -39,7 +42,7 @@ namespace RainfallAPI.Application.Queries.GetRainfallReadingQuery
 
             if (request.Count < MinimumReadingCount || request.Count > MaxReadingCount)
             {
-                rainfallReadingQueryResponse.ErrorResponses.Add(new Error()
+                rainfallReadingQueryResponse.ErrorResponses.Errors.Add(new Error()
                 {
                     Message = "Invalid Count",
                     Detail = new List<ErrorDetail>() { new() { PropertyName = "Count", Message = "Count should be between 1 to 100." } }
@@ -51,7 +54,7 @@ namespace RainfallAPI.Application.Queries.GetRainfallReadingQuery
             rainfallReadingQueryResponse.RainfallReadings = await GetRainfallReadingResponses(request.StationId, request.Count.Value);
             if (rainfallReadingQueryResponse.RainfallReadings == null || rainfallReadingQueryResponse.RainfallReadings.Readings.Count == 0)
             {
-                rainfallReadingQueryResponse.ErrorResponses.Add(new Error()
+                rainfallReadingQueryResponse.ErrorResponses.Errors.Add(new Error()
                 {
                     Message = $"No rainfall readings found for Station ID {request.StationId}"
                 });

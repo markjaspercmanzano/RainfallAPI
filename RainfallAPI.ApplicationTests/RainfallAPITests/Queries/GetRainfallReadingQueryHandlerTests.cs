@@ -25,7 +25,7 @@ namespace RainfallAPI.ApplicationTests.RainfallAPITests.Queries
             var response = await _handler.Handle(validRainfallReadingRequest, default);
 
             // Assert
-            Assert.Empty(response.ErrorResponses);
+            Assert.Empty(response.ErrorResponses.Errors);
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace RainfallAPI.ApplicationTests.RainfallAPITests.Queries
             var response = await _handler.Handle(validRainfallReadingRequest, default);
 
             // Assert
-            Assert.Single(response.ErrorResponses);
+            Assert.Single(response.ErrorResponses.Errors);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace RainfallAPI.ApplicationTests.RainfallAPITests.Queries
             var response = await _handler.Handle(validRainfallReadingRequest, default);
 
             // Assert
-            Assert.Single(response.ErrorResponses);
+            Assert.Single(response.ErrorResponses.Errors);
         }
     }
 }

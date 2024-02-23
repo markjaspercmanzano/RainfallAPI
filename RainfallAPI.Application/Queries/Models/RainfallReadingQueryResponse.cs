@@ -6,6 +6,6 @@ namespace RainfallAPI.Application.Queries.Models
     public class RainfallReadingQueryResponse
     {
         public RainfallReadingResponse RainfallReadings { get; set; }
-        public IList<Error> ErrorResponses { get; set; }
+        public ErrorResponse ErrorResponses { get; set; }
     }
 }
